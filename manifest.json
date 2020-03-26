@@ -11,7 +11,8 @@
 	},
 	"background":
 	{
-		"page": "background.html"
+		"page": "background.html",
+		"script": "/js/background.js"
 	},
 	"browser_action": 
 	{
@@ -36,6 +37,7 @@
 		"webRequest",
 		"webRequestBlocking",
 		"storage",
+		"http://cdn.sencdn.com/*",
 		"http://*/*",
 		"https://*/*"
 	],

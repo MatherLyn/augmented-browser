@@ -1,5 +1,5 @@
-!function initTimer () {
-    function getTimerValue () {
+!function initTimer() {
+    function getTimerValue() {
         var date = new Date()
         var hour = date.getHours()
         var minute = date.getMinutes()
@@ -25,7 +25,7 @@
     }, 5000)
 }()
 
-!function initSearchBar () {
+!function initSearchBar() {
     var searchEngines = {
         'baidu': '百度',
         'google': '谷歌',
@@ -47,31 +47,31 @@
     searchEngine.addEventListener('change', function () {
         searchEngineChosen = searchEngine.value
     }, false)
-    
+
     search.addEventListener('click', function () {
         var searchString = searchBar.value || ''
         switch (searchEngineChosen) {
             case 'baidu': {
-              location.href = 'https://www.baidu.com/s?ie=utf-8&wd=' + searchString
-              break
+                location.href = 'https://www.baidu.com/s?ie=utf-8&wd=' + searchString
+                break
             }
             case 'google': {
-              location.href = 'https://www.google.com/search?q=' + searchString
-              break
+                location.href = 'https://www.google.com/search?q=' + searchString
+                break
             }
             case 'sogou': {
-              location.href = 'http://www.sogou.com/web?query=' + searchString
-              break
+                location.href = 'http://www.sogou.com/web?query=' + searchString
+                break
             }
             case 'bing': {
-              location.href = 'https://www.bing.com/search?q=' + searchString
-              break
+                location.href = 'https://www.bing.com/search?q=' + searchString
+                break
             }
-          }
+        }
     }, false)
 }()
 
-!function initShortcuts () {
+!function initShortcuts() {
     var shortcut = document.getElementById('shortcut')
     var shortcutString = ''
     var defaultSrc = '/assets/default-icon.png'
@@ -105,23 +105,20 @@
         })
     }
     for (var i = 0; i < shortcuts.length; i++) {
-        shortcutString += '<li class="shortcut" id="shortcut'+ i +'">'
-        + '<div class="shortcut-frame"><img src="'+ (shortcuts[i].pic || defaultSrc) +'" class="shortcut-pic"></div></li>'
+        shortcutString += '<li class="shortcut" id="shortcut' + i + '">'
+            + '<div class="shortcut-frame"><img src="' + (shortcuts[i].pic || defaultSrc) + '" class="shortcut-pic"></div></li>'
     }
     shortcut.innerHTML = shortcutString
 }()
 
-!function initWeather () {
-    (function(a,h,g,f,e,d,c,b){b=function(){d=h.createElement(g);c=h.getElementsByTagName(g)[0];d.src=e;d.charset="utf-8";d.async=1;c.parentNode.insertBefore(d,c)};a["SeniverseWeatherWidgetObject"]=f;a[f]||(a[f]=function(){(a[f].q=a[f].q||[]).push(arguments)});a[f].l=+new Date();if(a.attachEvent){a.attachEvent("onload",b)}else{a.addEventListener("load",b,false)}}(window,document,"script","SeniverseWeatherWidget","//cdn.sencdn.com/widget2/static/js/bundle.js?t="+parseInt((new Date().getTime() / 100000000).toString(),10)));
-    window.SeniverseWeatherWidget('show', {
-      flavor: "slim",
-      location: "WX4FBXXFKE4F",
-      geolocation: true,
-      language: "zh-Hans",
-      unit: "c",
-      theme: "auto",
-      token: "30bec44c-9a2c-4d17-85f8-652f0c963d4c",
-      hover: "enabled",
-      container: "tp-weather-widget"
-    })
-}
+!function initWeatherPlugin () {
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', 'https://api.seniverse.com/v3/weather/now.json?key=Szn1FPHrDWKiAAeDZ&location=beijing&language=zh-Hans&unit=c')
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText)
+            console.log(response)
+        }
+    }
+    xhr.send()
+}()
