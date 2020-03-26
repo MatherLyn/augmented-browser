@@ -1,0 +1,56 @@
+{
+	"manifest_version": 2,
+	"name": "demo",
+	"version": "1.0.0",
+	"description": "简单的Chrome扩展demo",
+	"icons":
+	{
+		"16": "/assets/hello@2x.png",
+		"48": "/assets/hello@2x.png",
+		"128": "/assets/hello@2x.png"
+	},
+	"background":
+	{
+		"page": "background.html"
+	},
+	"browser_action": 
+	{
+		"default_icon": "/assets/hello@2x.png",
+		"default_title": "示例Chrome插件",
+		"default_popup": "popup.html"
+	},
+	"content_scripts": 
+	[
+		{
+			"matches": ["<all_urls>"],
+			"js": ["js/content-script.js"],
+			"css": ["css/content-css.css"],
+			"run_at": "document_start"
+		}
+	],
+	"permissions":
+	[
+		"contextMenus",
+		"tabs",
+		"notifications",
+		"webRequest",
+		"webRequestBlocking",
+		"storage",
+		"http://*/*",
+		"https://*/*"
+	],
+	"web_accessible_resources": ["js/inject.js"],
+	"homepage_url": "https://www.baidu.com",
+	"chrome_url_overrides":
+	{
+		"newtab": "newtab.html"
+	},
+	"options_page": "options.html",
+	"options_ui":
+	{
+		"page": "options.html",
+		"chrome_style": true
+	},
+	"omnibox": { "keyword" : "go" },
+	"devtools_page": "devtools.html"
+}
