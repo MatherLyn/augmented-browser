@@ -26,15 +26,20 @@ ul {
     overflow: hidden;
 }
 
+
+.display {
+    opacity: 1 !important;
+    z-index: 2 !important;
+}
+
 .background-container {
     position: fixed;
-    z-index: -1;
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -ms-filter: blur(3px);
+    z-index: 1;
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
     transform-origin: center;
-    transform: scale(1.1);
     width: 100%;
     height: 100%;
     background: url('/assets/bg-snow.jpg');
@@ -42,13 +47,58 @@ ul {
     background-size: cover;
 }
 
+.settings-container {
+    position: fixed;
+    top: 2rem;
+    right: 4rem;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.settings-icon {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    animation: rotate 2s infinite linear;
+    animation-play-state: paused;
+}
+
+.settings-icon:hover {
+    animation-play-state: running;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .timer-container {
-    margin-top: 10rem;
+    position: fixed;
+    width: fit-content;
+    height: 4rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 28rem;
+    margin: auto;
+    opacity: 0;
+    z-index: -1;
+    will-change: transform opacity;
+    transition-duration: .25s;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
 }
 
 .timer {
     color: #fff;
     font-size: 4rem;
+    line-height: 4rem;
     font-weight: 100;
     transition-duration: .25s;
     -webkit-transition-duration: .25s;
@@ -57,9 +107,20 @@ ul {
 }
 
 .search-bar-container {
+    position: fixed;
     width: fit-content;
-    margin: 3.6rem auto 0;
-    position: relative;
+    height: 4rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 14rem;
+    margin: auto;
+    z-index: 2;
+    will-change: transform opacity;
+    transition-duration: .25s;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
 }
 
 .search-engine {
@@ -103,10 +164,19 @@ ul {
     height: 3rem;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 2rem 2rem;
+    background-size: 1.6rem 1.6rem;
+}
+
+.search-engine-option:last-of-type {
+    border-radius: 1.5rem;
+}
+
+.search-engine-option:last-of-type:hover {
+    background-color: rgba(200, 200, 200, .4);
 }
 
 .search-engine-pic {
+    display: block;
     width: 2rem;
     height: 2rem;
     transform: translate(.5rem, .5rem);
@@ -121,7 +191,7 @@ ul {
     font-size: 1.6rem;
     font-weight: 300;
     border: none;
-    border-radius: 2rem;
+    border-radius: 1.6rem;
     outline: none;
     color: #fff;
     box-shadow: 0 0 1rem rgba(30, 30, 30, .2);
@@ -194,27 +264,46 @@ ul {
     background-color: rgba(200, 200, 200, .4);
 }
 
-.shortcut-container {
-    width: 50vw;
-    margin: 10rem auto 0;
-    overflow: hidden;
+.search-icon {
+    width: 1.6rem;
+    height: 1.6rem;
 }
 
-.shortcut-edit {
-    text-align: start;
-    color: #fff;
-    font-size: 1.2rem;
+.shortcut-container {
+    position: fixed;
+    width: 50vw;
+    max-width: 60rem;
+    height: 21vw;
+    max-height: 24.6rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: hidden;
+    transform: translateY(8rem);
+    will-change: transform opacity;
+    transition-duration: .25s;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+    opacity: 0;
+    z-index: -1;
 }
 
 .shortcut-list {
     width: 100vw;
+    max-width: 120rem;
+    height: 20vw;
+    max-height: 24rem;
 }
 
 .shortcut-page {
     width: 50vw;
+    max-width: 60rem;
+    height: 20vw;
+    max-height: 24rem;
     display: inline-block;
-    /* display: flex;
-    flex-wrap: wrap; */
 }
 
 .shortcut-first-page {
@@ -228,7 +317,9 @@ ul {
     display: inline-block;
     box-sizing: border-box;
     width: 10vw;
+    max-width: 12rem;
     height: 10vw;
+    max-height: 12rem;
     padding: 2vw;
 }
 
@@ -255,13 +346,16 @@ ul {
 }
 
 .shortcut-paging {
-    text-align: center;
+    width: fit-content;
+    height: .6rem;
+    margin: 0 auto;
+    font-size: 0;
 }
 
 .shortcut-paging-button {
     display: inline-block;
-    width: 15%;
-    height: .6rem;
+    width: 8rem;
+    height: 100%;
     border-radius: .3rem;
     box-shadow: 0 0 1rem rgba(30, 30, 30, .2);
     background-color: rgba(240, 240, 240, .25);
@@ -279,4 +373,111 @@ ul {
 
 .weather-plugin-container {
     
+}
+
+.settings-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(30, 30, 30, .2);
+    opacity: 0;
+    z-index: -1;
+    will-change: opacity;
+    transition-duration: .25s;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+}
+
+.settings {
+    position: fixed;
+    width: 50vw;
+    min-width: 320px;
+    max-width: 600px;
+    height: 60vh;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    background-color: #fff;
+    border-radius: .4rem;
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
+.settings-title {
+    width: 100%;
+    line-height: 2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-align: start;
+    padding-bottom: 1rem;
+}
+
+.settings-content {
+    width: 100%;
+    height: calc(100% - 3rem);
+    overflow: auto;
+}
+
+.settings-content::-webkit-scrollbar {
+    opacity: 0;
+    width: .6rem;
+}
+
+.settings-content::-webkit-scrollbar-thumb {
+    width: 100%;
+    background-color: rgba(48, 48, 48, .5);
+    border-radius: .3rem;
+}
+
+.settings-content::-webkit-scrollbar-button {
+  display: none;
+}
+
+.settings-content::-webkit-scrollbar-track {
+    display: none;
+}
+
+.settings-item-container {
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.settings-item-container-title {
+    width: 100%;
+    font-size: 1.4rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-align: start;
+}
+
+.settings-item {
+    position: relative;
+    width: 100%;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-align: start;
+    margin-top: 1.2rem;
+}
+
+.settings-item > label {
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+
+.settings-item > input {
+    box-sizing: border-box;
+    float: left;
+    width: calc(100% - 2rem);
+    height: 2rem;
+    padding: 0 1rem;
 }

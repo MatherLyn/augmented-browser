@@ -47,6 +47,7 @@
     var searchEngine = document.getElementById('searchEngine')
     var searchBar = document.getElementById('searchBar')
     var search = document.getElementById('search')
+    var bgContainer = document.getElementById('bgContainer')
     var engines = Object.keys(searchEngines)
     var engineString = ''
 
@@ -73,21 +74,28 @@
     } catch {
         console.log('Unable to get search engine option in storage.')
     }
+
+
+    // add events
     searchEngine.addEventListener('click', function (event) {
         choosing = !choosing
         if (choosing) {
             searchEngineFirst.style.marginTop = 0
             searchEngine.classList.remove('search-engine-default')
         } else {
-            searchEngineChosen = event.target.id
-            try {
-                chrome.storage.sync.set({'searchEngineChosen': searchEngineChosen}, function() {
-                    console.log('Search engine option saved.')
-                })
-            } catch (e) {
-                console.log('Unable to save search engine option.')
+            if (event.target.id === 'baidu' || event.target.id === 'google' || event.target.id === 'bing' || event.target.id === 'sogou') {
+                if (searchEngineChosen !== event.target.id) {
+                    searchEngineChosen = event.target.id
+                    try {
+                        chrome.storage.sync.set({'searchEngineChosen': searchEngineChosen}, function() {
+                            console.log('Search engine option saved.')
+                        })
+                    } catch (e) {
+                        console.log('Unable to save search engine option.')
+                    }
+                    currentChosen.setAttribute('src', searchEngines[searchEngineChosen].pic)
+                }
             }
-            currentChosen.setAttribute('src', searchEngines[searchEngineChosen].pic)
             searchEngineFirst.style.marginTop = '-12rem'
             searchEngine.classList.add('search-engine-default')
             searchBar.focus()
@@ -115,6 +123,15 @@
             }
         }
     }, false)
+
+    bgContainer.addEventListener('click', function () {
+        if (choosing) {
+            searchEngineFirst.style.marginTop = '-12rem'
+            searchEngine.classList.add('search-engine-default')
+            choosing = !choosing
+        }
+    }, false)
+
 }()
 
 !function initShortcuts() {
@@ -146,8 +163,16 @@
     var currentPaging = 0
     var len = shortcuts.length
     var itemNumInOnePage = Math.ceil(len / pagingNum)
+    var bgContainer = document.getElementById('bgContainer')
+    var searchBar = document.getElementById('searchBar')
+    var timerContainer = document.getElementById('timerContainer')
+    var searchBarContainer = document.getElementById('searchBarContainer')
+    var shortcutContainer = document.getElementById('shortcutContainer')
+    var settingsBtn = document.getElementById('settingsBtn')
+    var settings = document.getElementById('settings')
 
     // init doms
+    // shortcuts page
     for (var i = 0; i < pagingNum; i++) {
         shortcutString += '<ul class="shortcut-page ' + (i === 0 ? 'shortcut-first-page' : '') + '" id="shortcutPage' + i + '">'
         for (var j = 0; j < itemNumInOnePage; j++) {
@@ -188,31 +213,75 @@
     var shortcutList = document.getElementById('shortcutList')
     shortcutList.innerHTML = shortcutString
 
+    // shortcut paging buttons
     var shortcutPaging = document.getElementById('shortcutPaging')
     for (var i = 0; i < pagingNum; i++) {
         shortcutPagingString += '<div class="shortcut-paging-button' + (i === 0 ? ' shortcut-paging-focus' : '') + '" id="shortcutPaging' + i + '"></div>'
     }
     shortcutPaging.innerHTML = shortcutPagingString
 
-
-
-
+    // shortcut settings
+    var shortcutSettings = document.getElementById('shortcutSettings')
+    var shortcutSettingsString = '<div class="settings-item-container-title">快捷方式</div>'
+    for (var i = 0; i < shortcuts.length; i++) {
+        shortcutSettingsString += '<li class="settings-item"><label for="shortcutConfig' + i + '">' + (i + 1) + '</label><input type="text" name="shortcutConfig' + i + '" id="shortcutConfig' + i + '"></li>'
+    }
+    shortcutSettings.innerHTML = shortcutSettingsString
 
     // add events
+    searchBar.addEventListener('focus', function (event) {
+        timerContainer.style.transform = 'translateY(-2rem)'
+        searchBarContainer.style.transform = 'translateY(-2rem)'
+        if (!shortcutContainer.classList.contains('display')) {
+            shortcutContainer.classList.add('display')
+        }
+    }, false)
+
+    bgContainer.addEventListener('click', function (event) {
+        timerContainer.style.transform = 'translateY(0rem)'
+        searchBarContainer.style.transform = 'translateY(0rem)'
+        if (shortcutContainer.classList.contains('display')) {
+            shortcutContainer.classList.remove('display')
+        }
+    }, false)
+
+    settingsBtn.addEventListener('click', function (event) {
+        var settings = document.getElementById('settings')
+        if (settings.classList.contains('display')) {
+            settings.classList.remove('display')
+        } else {
+            settings.classList.add('display')
+        }
+    }, false)
+
+    settings.addEventListener('click', function (event) {
+        if (event.target.id === 'settings') {
+            if (settings.classList.contains('display')) {
+                settings.classList.remove('display')
+            }
+        }
+        return
+    }, false)
+
+
     shortcutList.addEventListener('click', function (event) {
         var id = event.target.id
         if (/^shortcut\d+$/.test(id)) {
             var index = parseInt(id.substring(8))
             if (shortcuts[index].url === '' && shortcuts[index].pic === '') {
                 // add one input for initializing shortcut url
-
+                if (!settings.classList.contains('display')) {
+                    settings.classList.add('display')
+                }
+                var input = document.getElementById('shortcutConfig' + index)
+                input.focus()
             } else {
                 window.location.href = shortcuts[index].url
             }
         }
     }, false)
 
-
+    
     shortcutPaging.addEventListener('click', function (event) {
         if (/\d$/.test(event.target.id)) {
             var paging = document.getElementsByClassName('shortcut-paging-button')
