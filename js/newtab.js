@@ -102,6 +102,11 @@
         }
     }, false)
 
+    searchBar.addEventListener('click', function (event) {
+        bgContainer.style.webkitFilter = 'blur(2px)'
+        bgContainer.style.transform = 'scale(1.1)'
+    }, false)
+
     search.addEventListener('click', function () {
         var searchString = searchBar.value || ''
         switch (searchEngineChosen) {
@@ -130,8 +135,20 @@
             searchEngine.classList.add('search-engine-default')
             choosing = !choosing
         }
+        bgContainer.style.webkitFilter = 'blur(0px)'
+        bgContainer.style.transform = 'scale(1)'
     }, false)
 
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            if (document.activeElement.id === 'searchBar') {
+                search.click()
+            } else {
+                searchBar.click()
+                searchBar.focus()
+            }
+        }
+    })
 }()
 
 !function initShortcuts() {
@@ -184,7 +201,6 @@
 
     try {
         chrome.storage.sync.get({shortcuts}, function (item) {
-            console.log(123123)
             console.log(item)
             if (Object.prototype.toString.call(item.shortcuts) === '[object Array]') {
                 if (shortcuts.length < item.shortcuts.length) {
@@ -316,3 +332,8 @@
     }
     xhr.send()
 }()
+
+window.onload = function () {
+    var bg = chrome.extension.getBackgroundPage()
+    console.log(bg.count)
+}
