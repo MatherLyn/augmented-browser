@@ -11,7 +11,7 @@
     <noscript>Please enable JavaScript to activate this extension.</noscript>
     <main class="app">
         <section class="background-container" id="bgContainer"></section>
-        <section class="settings-container">
+        <section class="settings-container" id="settingsContainer">
             <svg id="settingsBtn" t="1585362340188" class="settings-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4276" width="200" height="200">
                 <path d="M658.285714 512q0-60.571429-42.857143-103.428571t-103.428571-42.857143-103.428571 42.857143-42.857143 103.428571 42.857143 103.428571
                 103.428571 42.857143 103.428571-42.857143 42.857143-103.428571zm292.571429-62.285714l0 126.857143q0 6.857143-4.571429 13.142857t-11.428571
@@ -51,31 +51,22 @@
             <div class="shortcut-paging" id="shortcutPaging">
             </div>
         </section>
-        <section class="weather-plugin-container"></section>
+        <section class="weather-plugin-container" id="weatherPluginContainer"></section>
         <section class="settings-background-container" id="settings">
             <div class="settings">
                 <div class="settings-title">设置</div>
                 <div class="settings-content">
                     <ul class="settings-item-container" id="shortcutSettings">
                         <div class="settings-item-container-title">快捷方式</div>
-                        <li class="settings-item">
-                            <label for="shortcutConfig0">1</label>
-                            <input type="text" name="shortcutConfig0" id="shortcutConfig0">
-                        </li>
-                        <li class="settings-item">
-                            <label for="shortcutConfig0">1</label>
-                            <input type="text" name="shortcutConfig0" id="shortcutConfig0">
-                        </li>
-                        <li class="settings-item">
-                            <label for="shortcutConfig0">1</label>
-                            <input type="text" name="shortcutConfig0" id="shortcutConfig0">
-                        </li>
                     </ul>
                 </div>
             </div>
         </section>
-
     </main>
+
+    <template>
+        <li class="search-engine-option{{ i == 0 ? ' search-engine-first' : '' }}" style="background-image:url({{ toolkit.store.searchEngines[engines[i]].pic }})" id="{{ engines[i] }}"></li>
+    </template>
 
     <script src="/js/newtab.js"></script>
 </body>
