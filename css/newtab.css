@@ -9,6 +9,9 @@ html {
 }
 
 body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     font-family: "PingFang SC", "BlinkMacSystemFont", "Microsoft YaHei Light", "Microsoft YaHei", "Ubuntu", "WenQuanYi Micro Hei";
 }
 
@@ -21,9 +24,6 @@ ul {
 }
 
 .app {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
 }
 
 

@@ -134,6 +134,7 @@ function initSearchBar(toolkit) {
 
     searchEngine.addEventListener('click', function (event) {
         choosing = !choosing
+        console.log(choosing)
         if (choosing) {
             searchEngineFirst.style.marginTop = 0
             searchEngine.classList.remove('search-engine-default')
@@ -203,7 +204,7 @@ function initSearchBar(toolkit) {
                 searchBar.focus()
             }
         }
-    })
+    }, false)
 }
 
 function initShortcuts(toolkit) {
@@ -366,8 +367,23 @@ function initWeatherPlugin () {
     xhr.send()
 }
 
-function initState (store) {
+function initState (toolkit) {
     
+}
+
+function initSettings (toolkit) {
+    var shortcutSettings = document.getElementById('shortcutSettings')
+    var timer = null
+    shortcutSettings.addEventListener('input', function (event) {
+        if (timer !== null) {
+            clearTimeout(timer)
+            timer = null
+        }
+        timer = setTimeout(function () {
+            // request for icon
+            
+        }, 500)
+    }, false)
 }
 
 window.onload = function () {
@@ -378,4 +394,5 @@ window.onload = function () {
     initSearchBar(toolkit)
     initShortcuts(toolkit)
     initWeatherPlugin()
+    initSettings(toolkit)
 }
