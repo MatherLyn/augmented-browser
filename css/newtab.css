@@ -10,7 +10,9 @@ html {
 
 body {
     width: 100vw;
+    min-width: 320px;
     height: 100vh;
+    min-height: 568px;
     overflow: hidden;
     font-family: "PingFang SC", "BlinkMacSystemFont", "Microsoft YaHei Light", "Microsoft YaHei", "Ubuntu", "WenQuanYi Micro Hei";
 }

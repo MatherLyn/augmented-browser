@@ -375,14 +375,32 @@ function initSettings (toolkit) {
     var shortcutSettings = document.getElementById('shortcutSettings')
     var timer = null
     shortcutSettings.addEventListener('input', function (event) {
+        var id = event.target.id.substring(14)
+        console.log(id)
         if (timer !== null) {
             clearTimeout(timer)
             timer = null
         }
         timer = setTimeout(function () {
             // request for icon
-            
-        }, 500)
+            var value = event.target.value
+            console.log(value)
+            var iconUrl = value + '/favicon.ico'
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', iconUrl)
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        toolkit.store.shortcuts[id].url = value
+                        toolkit.store.shortcuts[id].pic = iconUrl
+                        var shortcut = document.getElementById('shortcut' + id)
+                        shortcut.style.backgroundImage = 'url(' + iconUrl + ')'
+                        return
+                    }
+                }
+            }
+            xhr.send()
+        }, 2000)
     }, false)
 }
 
