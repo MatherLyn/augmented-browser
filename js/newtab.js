@@ -233,33 +233,7 @@ function initShortcuts(toolkit) {
         shortcutString += '</ul>'
     }
 
-    try {
-        chrome.storage.sync.get({shortcuts}, function (item) {
-            console.log(item)
-            if (Object.prototype.toString.call(item.shortcuts) === '[object Array]') {
-                if (len < item.shortcuts.length) {
-                    toolkit.store.shortcuts = toolkit.store.shortcuts.slice(0, item.shortcuts.length)
-                }
-                for (var i = 0; i < item.shortcuts.length; i++) {
-                    if (item.shortcuts[i].url !== '' && item.shortcuts[i].pic !== '') {
-                        toolkit.store.shortcuts[i] = item.shortcuts[i]
-                    }
-                }
-                console.log('Get shortcuts options in storage.')
-            } else {
-                try {
-                    chrome.storage.sync.set({'shortcuts': toolkit.store.shortcuts}, function () {
-                        console.log('Shortcuts options saved.')
-                    })
-                } catch (e) {
-                    console.log('Unable to save hortcuts options in storage.')
-                }
-            }
-            len = toolkit.store.shortcuts.length
-        })
-    } catch (e) {
-        console.log('Unable to get shortcut option in storage.')
-    }
+    console.log()
 
     var shortcutList = document.getElementById('shortcutList')
     shortcutList.innerHTML = shortcutString
@@ -278,6 +252,39 @@ function initShortcuts(toolkit) {
         shortcutSettingsString += '<li class="settings-item"><label for="shortcutConfig' + i + '">' + (i + 1) + '</label><input type="text" name="shortcutConfig' + i + '" id="shortcutConfig' + i + '"></li>'
     }
     shortcutSettings.innerHTML = shortcutSettingsString
+
+    // get the store from storage
+    try {
+        chrome.storage.sync.get({'shortcuts': toolkit.store.shortcuts}, function (item) {
+            console.log(item)
+            if (Object.prototype.toString.call(item.shortcuts) === '[object Array]') {
+                if (len < item.shortcuts.length) {
+                    toolkit.store.shortcuts = toolkit.store.shortcuts.slice(0, item.shortcuts.length)
+                }
+                for (var i = 0; i < item.shortcuts.length; i++) {
+                    if (item.shortcuts[i].url !== '' && item.shortcuts[i].pic !== '') {
+                        toolkit.store.shortcuts[i] = item.shortcuts[i]
+                        var shortcutDOM = document.getElementById('shortcut' + i)
+                        shortcutDOM.style.backgroundImage = 'url(' + item.shortcuts[i].pic + ')'
+                        var input = document.getElementById('shortcutConfig' + i)
+                        input.value = item.shortcuts[i].url
+                    }
+                }
+                console.log('Get shortcuts options in storage.')
+            } else {
+                try {
+                    chrome.storage.sync.set({'shortcuts': toolkit.store.shortcuts}, function () {
+                        console.log('Shortcuts options saved.')
+                    })
+                } catch (e) {
+                    console.log('Unable to save hortcuts options in storage.')
+                }
+            }
+            len = toolkit.store.shortcuts.length
+        })
+    } catch (e) {
+        console.log('Unable to get shortcut option in storage.')
+    }
 
     // Add events
     // These are all closures.
@@ -324,7 +331,6 @@ function initShortcuts(toolkit) {
                 if (!settings.classList.contains('display')) {
                     settings.classList.add('display')
                 }
-                var input = document.getElementById('shortcutConfig' + index)
                 input.focus()
             } else {
                 window.location.href = toolkit.store.shortcuts[index].url
@@ -407,10 +413,23 @@ function initSettings (toolkit) {
 window.onload = function () {
     var bg = chrome.extension.getBackgroundPage()
     window.toolkit = new Toolkit()
+    chrome.storage.sync.get('shortcuts', function (item) {
+        console.log(item)
+    })
     
     initTimer()
     initSearchBar(toolkit)
     initShortcuts(toolkit)
     initWeatherPlugin()
     initSettings(toolkit)
+}
+
+window.onunload = function () {
+    try {
+        chrome.storage.sync.set({'shortcuts': toolkit.store.shortcuts}, function () {
+            console.log('Shortcuts options saved.')
+        })
+    } catch (e) {
+        console.log('Unable to save hortcuts options in storage.')
+    }
 }
